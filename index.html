@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <div id="navbar"></div>
+    <h1>Usuarios</h1>
+    <hr>
+    <br>
+    <!--
+        <input
+            type="text"
+            value={value}
+            onChange={e => setValue(e.target.value)}
+        />
+    -->
+
+    <br>
+    <input type="text" id="inpFiltrar" name="filtro" placeholder="Filtrar" onkeydown="filtrar()">
+    <br>
+    <br>
+    <form action="./funciones.js" method="post"
+    <div style="display: flex">
+        <input type="text" id="inpNombre" name="inp" required style="width: 80px;">
+        <input type="text" id="inpApellidos" name="inp" required style="width: 80px;">
+        <input type="text" id="inpEmail" name="inp" required style="width: 80px;">
+        <input type="text" id="inpContrasena" name="inp" required style="width: 80px;">
+        <input type="text" id="inpTelefono" name="inp" required style="width: 80px;">
+        <div style="border: 10px;">
+            <label>sexo:</label>
+            <label>M</label>
+            <input type="radio" id="inpSexoM" name="insexo" value="masculino">
+            <label>F</label>
+            <input type="radio" id="inpSexoF" name="insexo" value="femenino">
+        </div>
+        <div>
+            <button type="button" class="aniadir" onclick="cearUsu()">aniadir</button></td>
+        </div>
+
+    </div>
+    </form>
+    <table id="tabla">
+        <thead id="thead">
+            <tr id="tr">
+                <th>Nombre</th>
+                <th>apellidos</th>
+                <th>email</th>
+                <th>contrasena</th>
+                <th>Tlf.</th>
+                <th>sexo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablabody"></tbody>
+    </table>
+
+    <script>
+        function usuario(id,nombre,apellidos,email,contrasena,telefono,sexo) {
+            var usu = {
+                id: id,
+                nombre: nombre,
+                apellidos: apellidos,
+                email: email,
+                contrasena:contrasena,
+                telefono:telefono,
+                sexo: sexo
+            };
+        }
+
+        var usu1 = {
+            id: Math.random() - 0.5,
+            nombre: "julia1",
+            apellidos: "apellido1",
+            email: "email1",
+            contrasena:"contrasena1",
+            telefono:"telefono1",
+            sexo: "sexo1"
+        };
+        var usu2 = {
+            id: Math.random() - 0.5,
+            nombre: "julia2",
+            apellidos: "apellido2",
+            email: "email2",
+            contrasena:"contrasena2",
+            telefono:"telefono2",
+            sexo: "sexo2"
+        };
+        var usuarios = [usu1,usu2];
+
+        function carga() {
+            console.log("CARGA: usuarios - "+usuarios);
+
+            document.getElementById("tablabody").remove();
+            
+            tb=document.getElementById("tabla").appendChild(document.createElement('tbody')).setAttribute("id", "tablabody");
+
+            //var tabla= document.getElementById('#tablabody');
+            //tabla.style.display=="none";
+            
+            var ele = document.getElementById('tablabody');
+            /*
+            var table = document.createElement('table');
+            ele.appendChild(table);
+            */
+            var th = document.createElement('th');
+            var tr = document.createElement('tr');
+            ele.appendChild(tr);
+
+            for (let i = 0; i < usuarios.length; i++){
+                
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                var txt = document.createTextNode(usuarios[i].nombre);
+                td.appendChild(txt);
+
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                var txt = document.createTextNode(usuarios[i].apellidos);
+                td.appendChild(txt);
+
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                var txt = document.createTextNode(usuarios[i].email);
+                td.appendChild(txt);
+
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                var txt = document.createTextNode(usuarios[i].contrasena);
+                td.appendChild(txt);
+
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                var txt = document.createTextNode(usuarios[i].telefono);
+                td.appendChild(txt);
+
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                var txt = document.createTextNode(usuarios[i].sexo);
+                td.appendChild(txt);
+
+                var td = document.createElement('td');
+                tr.appendChild(td);
+
+                    var btn = document.createElement("button");
+                    btn.type="button";
+                    btn.onclick=function(){
+                        borrarUsuario(i);
+                        alerta(i);};
+                    btn.innerHTML = "X";
+                    td.appendChild(btn);
+
+                    var btn = document.createElement("button");
+                    btn.type="button";
+                    btn.onclick=function(auxiliar=i){
+                        editarUsuario(auxiliar);
+                        alerta(i);};
+                    btn.innerHTML = "editar";
+                    td.appendChild(btn);
+
+                    var btn = document.createElement("button");
+                    btn.type="button";
+                    btn.onclick=function(auxiliar=i){
+                        guardarUsuario(auxiliar);
+                        alerta(i);};
+                    btn.innerHTML = "guardar";
+                    td.appendChild(btn);
+
+                var tr = document.createElement('tr');
+                ele.appendChild(tr);
+                
+            }
+            //document.getElementById("tabla").appendChild(para)
+            document.getElementById("tablabody").style.display = '';
+            
+            var userjson = JSON.stringify(usuarios);
+            console.log(userjson);
+
+            /*
+            console.log(json.stringify(usuarios));  
+            console.log(json_decode[json_encode[usuarios]]);
+            */
+        }
+
+
+        function cearUsu(){
+            var obj1 = {
+                nombre: document.getElementById("inpNombre").value,
+                apellidos: document.getElementById("inpApellidos").value,
+                email: document.getElementById("inpEmail").value,
+                contrasena: document.getElementById("inpContrasena").value,
+                telefono: document.getElementById("inpTelefono").value,
+                sexo: document.getElementById("inpSexoM").value,
+            };
+            usuarios.push(obj1);
+            carga();
+        }
+
+        /*
+        function ocultarForm(){
+            document.getElementById("editForm").style.display='none';
+            usuario=usuarios.find(usuarios=>usuario.nombre===nombre);
+            console.log(usuario);
+            //al no pasar nada los setter se convierten en getters
+            usuario.name=document.getElementById('inName').value; 
+            usuario.lastname=document.getElementById('inLastname').value;
+            usuario.phone=document.getElementById('inPhone').value;
+            usuario.email=document.getElementById('inEmail').value;
+
+        }
+        */
+        
+        //editar filtrado por correo, mejor si el user tiene ID en vez de correo
+        function editarUsuario(usuario){ 
+            console.log('estoy editando');
+
+
+        }
+
+        function borrarUsuario(posicionArray){ 
+            usuarios.splice(posicionArray,1);
+            carga();
+        }
+
+        /*
+        const searchFunction = () => {
+            if (customerDatas) {
+                let data = [];
+                if (searchBar != "" && searchBar.length >= 3) {
+                    data = customerDatas.filter(customerData => {
+                        return customerData.name.toLowerCase().includes(searchBar.toLowerCase());
+                    });
+                }
+                return data;
+            }
+        };*/
+
+        function filtrar (inpFiltrar)  {
+            for (let i = 0; i < usuarios.length; i++){
+                let filtrado = usuarios[i].email.includes(inpFiltrar);
+                console.log(filtrado);
+                //
+                document.getElementsByTagName('td').style.filter = "font-weight: bold;";
+                //
+                let tr = document.getElementsByTagName('td');
+                tr.style = "font-weight: bold;";
+            }
+            const result = this.usuarios.filtrar(usuario => usuario.length > 3);
+            //let result = [];
+            if (inpFiltrar != "" && inpFiltrar.length >= 3) {
+                result = inpFiltrar.filtrar(filtrado => {
+                    return filtrado.email.includes(inpFiltrar);
+                    document.getElementsByClassName("inp").style.filter = "font-weight: bold;";
+                });
+            }
+            return result;
+        }
+        
+        function myFunction() {
+            var input, filter, th, tr, td, i, txtValue;
+            input = document.getElementById("inpFiltrar");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("tr");
+            li = ul.getElementsByTagName("th");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+        
+
+
+        window.onload = function() {
+            carga();
+            cargaNavBar();
+        };
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/funciones.js"></script>
+    <script src="js/alerts.js"></script>
+</body>
+</html>
